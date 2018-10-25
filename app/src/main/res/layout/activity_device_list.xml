@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:textColor="@color/wi"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:id="@+id/title_paired_devices"
@@ -24,6 +25,7 @@
         android:layout_weight="1" />
 
     <TextView
+        android:textColor="@color/wi"
         android:id="@+id/pairText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,6 +43,7 @@
         android:paddingRight="30dp">
 
         <TextView
+            android:textColor="@color/wi"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="3"
@@ -66,6 +69,7 @@
         android:paddingRight="10dp" />
 
     <TextView
+        android:textColor="@color/wi"
         android:id="@+id/foundText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -22,29 +23,50 @@ import android.widget.Toast;
 
 public class EventManagement extends DialogFragment {
     private RecyclerView recyclerView;
-
+    private TextView textEvent;
+    private TextView charText;
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder= new AlertDialog.Builder(getActivity());
-
         //Get Layout Inflator
         LayoutInflater inflater = getActivity().getLayoutInflater();
         //Pass null as the parent view because its goinf in the dialogue layout
         View dialogview=inflater.inflate(R.layout.event_management,null);
         recyclerView=dialogview.findViewById(R.id.rSesnsors);
-
+        textEvent = dialogview.findViewById(R.id.teName);
+        charText = dialogview.findViewById(R.id.accuator);
         DialogRecyclerAdapter dialogRecyclerAdapter =new DialogRecyclerAdapter(getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(dialogRecyclerAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),DividerItemDecoration.VERTICAL ));
+
+        sensorDetails.setupNewEvent();
         builder.setTitle("Event Management");
         builder.setView(dialogview);
         //Add  action Buttons
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(builder.getContext(),"It really works",Toast.LENGTH_SHORT);
+                sensorDetails.charTosend.add(charText.getText().toString().trim());
+                sensorDetails.evntCreated++;
+                sensorDetails.eventAdded=false;
+                sensorDetails.eventName.add(textEvent.getText().toString().trim());
+            }
+        });
+
+        builder.setNegativeButton("Clear all event",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sensorDetails.clearEvents();
+            }
+        });
+
+        builder.setNeutralButton("Cancel",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sensorDetails.eventAttributes.remove(sensorDetails.evntCreated);
+                sensorDetails.eventAdded=false;
             }
         });
         return builder.create();

@@ -23,7 +23,7 @@ public class HomeActivity extends Activity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(HomeActivity.this,Infopage.class);
+                Intent mainIntent = new Intent(HomeActivity.this,Dashboard.class);
                 HomeActivity.this.startActivity(mainIntent);
                 HomeActivity.this.finish();
             }

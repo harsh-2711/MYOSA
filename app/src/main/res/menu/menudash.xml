@@ -15,4 +15,10 @@
         android:title="@string/bButton"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/seePredictions"
+        android:title="See Predictions"
+        app:showAsAction="never"
+        />
+
 </menu>

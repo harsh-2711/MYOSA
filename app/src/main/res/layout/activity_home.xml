@@ -5,27 +5,27 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ravi.myosa.HomeActivity">
+    tools:context="com.example.ravi.myosa.HomeActivity"
+    android:background="@color/wi">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/home_icon"
-        android:contentDescription="@string/sensor_councile"/>
+        android:layout_width="147dp"
+        android:layout_height="144dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/sensor_councile"
+        android:src="@drawable/home_icon" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/imageView"
+        android:layout_below="@+id/imageView"
+        android:textColor="@color/secondaryTextColor"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="12dp"
-        android:text="@string/TitleName"
-        android:textColor="#0e6655"
-        android:textSize="20sp" />
-
+        android:text="VR Friends"
+        android:textSize="30sp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"/>
 
 </RelativeLayout>

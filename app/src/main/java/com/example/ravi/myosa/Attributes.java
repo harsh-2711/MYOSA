@@ -31,11 +31,12 @@ public class Attributes {
     }
 
     String head;
-     String attName;
-    int type;    // 1 = signle value, 2 = single String value, 3 = triplet value, 4 = tiplet String
+    String attName;
     String att1;
     String att2;
     String att3;
+    int type;    // 1 = single value, 2 = single String value, 3 = triplet value, 4 = triplet String value
+
     Attributes(String h, String an, int n){
         this.attName = an;
         this.head = h;
