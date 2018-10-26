@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "856195958873",
+    "firebase_url": "https://myosa-c0896.firebaseio.com",
+    "project_id": "myosa-c0896",
+    "storage_bucket": "myosa-c0896.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856195958873:android:edac5445e29da060",
+        "android_client_info": {
+          "package_name": "com.example.ravi.mayosa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "856195958873-3lhnr152dgq50ieq0c2u435bqdsf6ash.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ravi.mayosa",
+            "certificate_hash": "79745b658e12346187e5de1b9d0dd1f97d170f97"
+          }
+        },
+        {
+          "client_id": "856195958873-n9m8ba85tb57achihlsfe86g9pdnce4o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlQUHM9bljdKNvnwH9Apcms9Yq51ZQvf0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "856195958873-n9m8ba85tb57achihlsfe86g9pdnce4o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

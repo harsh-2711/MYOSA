@@ -25,7 +25,10 @@
         <activity android:name=".Dashboard" />
         <activity android:name=".bluetooth_connectivity.DeviceList" />
         <activity android:name=".Infopage" />
-        <activity android:name=".PredictionsActivity"></activity>
+        <activity android:name=".PredictionsActivity" />
+        <activity android:name=".Registration.LoginActivity" />
+        <activity android:name=".Registration.UsersListActivity" />
+        <activity android:name=".Registration.RegisterActivity"></activity>
     </application>
 
 </manifest>

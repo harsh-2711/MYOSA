@@ -123,4 +123,26 @@
     <string name="homepack">Packaging:</string>
     <string name="homemoti">Motivation:</string>
     <string name="motivatontext">Learning is always fruitful when one experiments. The curriculum of pre-university students does not include sensors. So far it might have been thought too early for them to introduce it. If they are asked to build a sensor based application, these students might run away just from the sheer mess of soldering wires, coding, ordering the right sensors, etc. Also, with the advent of IoT and dream of Smart Cities, sensors have become an integral part of applications and research just like basic resistors and capacitors. With sensors gaining such an immense importance in ample of technological advancements, it is desirable for the pre-university students to get introduced to the world of sensors. Such introduction to sensors, at the pre-university stage would kindle a curiosity among the students to explore more and contribute in the future advancements. With a motivation to make this learning process playful, without any burden or complexity, we have designed and developed the MYOSA board. We also have developed some basic experiments around this board such that the students or programmers can use it without wasting their efforts and time behind basic sensor coding and operations. It gives a hands-on experience to the users and the suggested projects provoke thought process. One can also design one’s own circuits and applications using sensors.</string>
+
+    <string name="text_accounts">All Accounts</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="text_login">Login</string>
+    <string name="text_register">Register</string>
+    <string name="error_message_name">Enter Full Name</string>
+    <string name="error_message_email">Enter Valid Email</string>
+    <string name="error_message_id">Enter Valid Event ID</string>
+    <string name="error_message_age">Enter Age</string>
+    <string name="error_message_password">Enter Password</string>
+    <string name="success_message">Registration Successful</string>
+    <string name="text_not_member">No account yet? Create one</string>
+    <string name="text_already_member">Already a member? Login</string>
+    <string name="error_email_exists">Email Already Exists</string>
+    <string name="error_password_match">Password Does Not Matches</string>
+    <string name="error_valid_email_password">Wrong Email or Password</string>
+    <string name="text_hello">Hello,</string>
+    <string name="text_title">VR Friends</string>
+
 </resources>

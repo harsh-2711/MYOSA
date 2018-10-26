@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ravi.myosa.Database.DatabaseHelper;
+import com.example.ravi.myosa.Registration.LoginActivity;
 import com.example.ravi.myosa.bluetooth_connectivity.BluetoothComService;
 import com.example.ravi.myosa.bluetooth_connectivity.DeviceList;
 import com.jjoe64.graphview.GraphView;
@@ -342,6 +343,11 @@ public class Dashboard extends AppCompatActivity {
                 Intent intent = new Intent(Dashboard.this, PredictionsActivity.class);
                 startActivity(intent);
                 return true;
+
+            case R.id.logOut:
+                getSharedPreferences("PREFS_NAME", MODE_PRIVATE).edit().putBoolean("isLoggedIn",false).apply();
+                Intent intent1 = new Intent(Dashboard.this, LoginActivity.class);
+                startActivity(intent1);
 
             default:
                 return super.onOptionsItemSelected(item);

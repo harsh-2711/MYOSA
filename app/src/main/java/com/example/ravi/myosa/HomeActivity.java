@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.Window;
 
+import com.example.ravi.myosa.Registration.LoginActivity;
+
 public class HomeActivity extends Activity {
 
     private final int SPLASH_DISPLAY_LENGTH = 1000;
@@ -23,7 +25,7 @@ public class HomeActivity extends Activity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(HomeActivity.this,Dashboard.class);
+                Intent mainIntent = new Intent(HomeActivity.this,LoginActivity.class);
                 HomeActivity.this.startActivity(mainIntent);
                 HomeActivity.this.finish();
             }
