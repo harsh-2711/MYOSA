@@ -1,6 +1,9 @@
 package com.example.ravi.myosa;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,11 +13,13 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.example.ravi.myosa.R;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class PredictionsActivity extends AppCompatActivity {
@@ -257,6 +262,8 @@ public class PredictionsActivity extends AppCompatActivity {
             predictingText.setVisibility(View.GONE);
             stopPrediction.setClickable(true);
             runnable.run();
+            Intent intent = new Intent(PredictionsActivity.this,GameActivity.class);
+            startActivity(intent);
             super.onPostExecute(aVoid);
         }
     }

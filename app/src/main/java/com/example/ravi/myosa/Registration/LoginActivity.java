@@ -137,9 +137,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      */
     private void verifyFromFirebase() {
 
-        final String eventID = textInputEditTextEmail.getText().toString().trim();
+        final String email = textInputEditTextEmail.getText().toString().trim();
         final String password = textInputEditTextPassword.getText().toString().trim();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Patients");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    if(data.child("Email").getValue().toString().equals(email) && data.child("password").getValue().toString().equals(password)) {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putBoolean("isLoggedIn", true);
+                        editor.apply();
 
+                        Intent accountsIntent = new Intent(activity, SelectGame.class);
+                        //  accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
+                        emptyInputEditText();
+                        startActivity(accountsIntent);
+                        finish();
+                    }
+                    else {
+                        // Snack Bar to show success message that record is wrong
+                        Snackbar snack = Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG);
+                        View view = snack.getView();
+                        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                        tv.setTextColor(Color.WHITE);
+                        snack.show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     /**
@@ -171,12 +202,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             finish();
 
         } else {
-            // Snack Bar to show success message that record is wrong
-            Snackbar snack = Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG);
-            View view = snack.getView();
-            TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-            tv.setTextColor(Color.WHITE);
-            snack.show();
+           verifyFromFirebase();
         }
     }
 

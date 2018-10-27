@@ -2,6 +2,7 @@ package com.example.ravi.myosa.Registration;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
@@ -10,6 +11,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -47,6 +49,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private InputValidation inputValidation;
     private DataBaseHelper databaseHelper;
     private User user;
+
+    private boolean isTrue;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -148,6 +152,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             if(textInputEditTextDrCode.getText().toString().trim().equals("")) {
                 user.setDrCode("");
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Patients");
+                reference.child(user.getName()).child("Email").setValue(user.getEmail());
+                reference.child(user.getName()).child("password").setValue(user.getPassword());
+                reference.child(user.getName()).child("Doctor").setValue("None");
                 postDataToSQLite();
                 // Snack Bar to show success message that record saved successfully
                 Snackbar snack = Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG);
@@ -158,44 +166,44 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 emptyInputEditText();
             }
             else {
-/*                user.setDrCode(textInputEditTextDrCode.getText().toString().trim());
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Events");
+                user.setDrCode(textInputEditTextDrCode.getText().toString().trim());
+                final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Doctors");
+                Log.e("code",user.getDrCode());
                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.child(user.getDrCode()).exists()) {
-                            dataSnapshot.child(user.getDrCode()).child("Patients").getRef().child(user.getName()).setValue(user.getEmail());
-                            postDataToSQLite();
-                            // Snack Bar to show success message that record saved successfully
-                            Snackbar snack = Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG);
-                            View view = snack.getView();
-                            TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                            tv.setTextColor(Color.WHITE);
-                            snack.show();
-                            emptyInputEditText();
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot data : dataSnapshot.getChildren()) {
+                            if(data.child("code").getValue().toString().equals(user.getDrCode())) {
+                                isTrue = true;
+                                data.child("Patients").child(user.getName()).getRef().setValue("Gurgaon");
+                                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Patients");
+                                reference1.child(user.getName()).child("Doctor").setValue(data.getKey());
+                                reference1.child(user.getName()).child("Email").setValue(user.getEmail());
+                                reference1.child(user.getName()).child("password").setValue(user.getPassword());
+
+                                postDataToSQLite();
+                                // Snack Bar to show success message that record saved successfully
+                                Snackbar snack = Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG);
+                                View view = snack.getView();
+                                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                                tv.setTextColor(Color.WHITE);
+                                snack.show();
+                                emptyInputEditText();
+                                break;
+                            }
+                            else
+                                isTrue = false;
+                            Log.i("data",data.child("code").getValue().toString());
                         }
-                        else
-                            Toast.makeText(activity, "Wrong code inserted", Toast.LENGTH_SHORT).show();
+                        if(!isTrue)
+                            Toast.makeText(activity, "Code not found", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Toast.makeText(activity, "Database Error", Toast.LENGTH_SHORT).show();
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
-                });*/
-                String s = textInputEditTextDrCode.getText().toString().trim();
-                if(s.equals("anil1111") || s.equals("harin5423") || s.equals("yash1011"))
-                    user.setDrCode(s);
-                else
-                    user.setDrCode("");
-                postDataToSQLite();
-                // Snack Bar to show success message that record saved successfully
-                Snackbar snack = Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG);
-                View view = snack.getView();
-                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                tv.setTextColor(Color.WHITE);
-                snack.show();
-                emptyInputEditText();
+                });
             }
 
         } else {

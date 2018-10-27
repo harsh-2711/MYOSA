@@ -33,7 +33,11 @@
         <activity android:name=".Registration.LoginActivity" />
         <activity android:name=".Registration.UsersListActivity" />
         <activity android:name=".Registration.RegisterActivity" />
-        <activity android:name=".SelectGame"></activity>
+        <activity android:name=".SelectGame" />
+
+        <activity android:name=".GameActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
