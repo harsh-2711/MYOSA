@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.ravi.myosa.Dashboard;
 import com.example.ravi.myosa.R;
+import com.example.ravi.myosa.SelectGame;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -66,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (isLoggedIn) {
             SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-            Intent accountsIntent = new Intent(activity, Dashboard.class);
+            Intent accountsIntent = new Intent(activity, SelectGame.class);
             startActivity(accountsIntent);
             finish();
         } else {
@@ -163,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             editor.putBoolean("isLoggedIn", true);
             editor.apply();
 
-            Intent accountsIntent = new Intent(activity, Dashboard.class);
+            Intent accountsIntent = new Intent(activity, SelectGame.class);
             //  accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
             emptyInputEditText();
             startActivity(accountsIntent);

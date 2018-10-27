@@ -21,6 +21,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/information"
+        android:title="Info on phobia"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/logOut"
         android:title="Log Out"
         app:showAsAction="never" />

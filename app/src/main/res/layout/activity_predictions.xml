@@ -73,7 +73,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
+             <!--   <TextView
                     android:id="@+id/temperature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -86,6 +86,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Humidity : "
+                    android:textSize="17sp" />  -->
+
+                <TextView
+                    android:id="@+id/gyroX"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Gyroscope(X-axis) : "
                     android:textSize="17sp" />
 
                 <TextView
@@ -143,7 +151,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="6dp"
                         android:layout_weight="1"
-                        android:progress="45" />
+                        android:progress="0" />
 
                     <TextView
                         android:id="@+id/fearPercentage"
@@ -152,7 +160,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="30dp"
                         android:layout_weight="0.1"
-                        android:text="45%"
+                        android:text="0%"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -183,7 +191,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="The depth of the steps should be increased while repeating the previous scene"
+                    android:text="The game is not yet started"
                     android:textSize="16sp" />
 
             </LinearLayout>

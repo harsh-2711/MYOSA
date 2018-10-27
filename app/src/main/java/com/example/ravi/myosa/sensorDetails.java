@@ -21,19 +21,20 @@ public class sensorDetails {
     public static ArrayList<String> charTosend = new ArrayList<>();
     public static boolean[] notified = new boolean[3];
     public sensorDetails(){
+
         this.tiles=new ArrayList<>();
 
         this.SensorAttributes=new ArrayList<attr>();
         tiles.add(new Attributes("Real Time Clock", "Date","Time","Day",4));
 
-        tiles.add(new Attributes("Luminousity Sensor","Visibility(Raw Data)", 1));
-        tiles.add(new Attributes("Luminousity Sensor","Infrared (Raw Data)", 1));
-        tiles.add(new Attributes("Luminousity Sensor","Illuminance(LUX)", 1));
+        tiles.add(new Attributes("Luminosity Sensor","Visibility(Raw Data)", 1));
+        tiles.add(new Attributes("Luminosity Sensor","Infrared (Raw Data)", 1));
+        tiles.add(new Attributes("Luminosity Sensor","Illuminance(LUX)", 1));
 
-        tiles.add(new Attributes("Berometric Pressure sensor","Temprature (\u00B0C)", 1));
-        tiles.add(new Attributes("Berometric Pressure sensor","Pressure (mbar)", 1));
-        tiles.add(new Attributes("Berometric Pressure sensor","Pressure (mmHg)", 1));
-        tiles.add(new Attributes("Berometric Pressure sensor","Altitude (meter)", 1));
+        tiles.add(new Attributes("Barometric Pressure sensor","Temprature (\u00B0C)", 1));
+        tiles.add(new Attributes("Barometric Pressure sensor","Pressure (mbar)", 1));
+        tiles.add(new Attributes("Barometric Pressure sensor","Pressure (mmHg)", 1));
+        tiles.add(new Attributes("Barometric Pressure sensor","Altitude (meter)", 1));
 
         tiles.add(new Attributes("Air Quality Snensor","CO2 (ppm)", 1));
         tiles.add(new Attributes("Air Quality Snensor","TVOC (ppb)", 1));

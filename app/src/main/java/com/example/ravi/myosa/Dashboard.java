@@ -40,6 +40,8 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.util.ArrayList;
+
 public class Dashboard extends AppCompatActivity {
 
     // Message types sent from the BluetoothComService Handler
@@ -78,13 +80,28 @@ public class Dashboard extends AppCompatActivity {
 
     public boolean toFetch;
 
+    private ArrayList<String> phobiaInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        phobiaInfo = new ArrayList<>();
+        phobiaInfo.add("Acrophobia is phobia of heights. A person having acrophobia feels dizzy and uncomfortable when taken to heights. " +
+                "The fear increases as the person is taken to more and more heights.");
+        phobiaInfo.add("Phobophobia is phobia of fear. A person having this phobia feels uncomfortable at quite and dark places. " +
+                "Sudden movements increases the heartbeats of a person having phobophobia.");
+        phobiaInfo.add("Claustrophobia is a phobia of congested places. A person having claustrophobia feels uncomfortable when " +
+                "the surroundings are congested or very small to fit in.");
+        phobiaInfo.add("Cynophobbia is a phobia of dogs. A person having Cynophobia feels very uncomfortable around dogs.");
+        phobiaInfo.add("Hemophobia is a phobia of blood. A person having Hemophobia starts fainting even with slightest sight of blood.");
+
+
         notMang = NotificationManagerCompat.from(this);
         databaseHelper = new DatabaseHelper(this);
         deleteDatabase(databaseHelper.DATABASE_NAME);
+
         uriofNotification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         sns = new sensorDetails();
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -192,6 +209,7 @@ public class Dashboard extends AppCompatActivity {
                     break;
                 case MESSAGE_READ:
                     String readMessage = (String) msg.obj;
+
                     // construct a string from the valid bytes in the buffer
                     //String readMessage = new String(readBuf, 0, msg.arg1);
 
@@ -212,7 +230,7 @@ public class Dashboard extends AppCompatActivity {
                         Log.e("msg", "rcvd " + to_store);
                         to_store = "";
 
-                        if(!s[12].equals("*") || !s[14].equals("*") || !s[23].equals("*") || !s[24].equals("*") || !s[26].equals("*") || !s[27].equals("*"))
+                        if(!s[22].equals("*") || !s[23].equals("*") || !s[24].equals("*") || !s[26].equals("*") || !s[27].equals("*"))
                             toFetch = true;
                         else
                             toFetch = false;
@@ -239,6 +257,9 @@ public class Dashboard extends AppCompatActivity {
                         findViewById(R.id.instuText).setVisibility(View.VISIBLE);
                     }
                     break;
+                    default:
+                        Log.i("to_store", "HI");
+                        break;
             }
         }
     };
@@ -344,6 +365,20 @@ public class Dashboard extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+            case R.id.information:
+                final AlertDialog alertDialog = new AlertDialog.Builder(Dashboard.this).create();
+                alertDialog.setTitle("Information");
+                int position = getSharedPreferences("phobiaIndex",MODE_PRIVATE).getInt("position",0);
+                alertDialog.setMessage(phobiaInfo.get(position));
+                alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+                return true;
+
             case R.id.logOut:
                 getSharedPreferences("PREFS_NAME", MODE_PRIVATE).edit().putBoolean("isLoggedIn",false).apply();
                 Intent intent1 = new Intent(Dashboard.this, LoginActivity.class);
@@ -356,8 +391,7 @@ public class Dashboard extends AppCompatActivity {
 
     void addData(String[] s) {
         SharedPreferences sharedPreferences = getSharedPreferences("Data",MODE_PRIVATE);
-        sharedPreferences.edit().putString("temp",s[12]).apply();
-        sharedPreferences.edit().putString("humidity",s[14]).apply();
+        sharedPreferences.edit().putString("gyroX",s[22]).apply();
         sharedPreferences.edit().putString("gyroY",s[23]).apply();
         sharedPreferences.edit().putString("gyroZ",s[24]).apply();
         sharedPreferences.edit().putString("accY",s[26]).apply();
@@ -391,7 +425,7 @@ public class Dashboard extends AppCompatActivity {
                     visi[i] = true;
                     view[i].setVisibility(View.VISIBLE);
                 }
-                if (Double.valueOf(s[23]) >= 75) {
+/*                if (Double.valueOf(s[23]) >= 75) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
                     String number = "7574842044";
                     callIntent.setData(Uri.parse("tel:" + number));//change the number
@@ -406,7 +440,7 @@ public class Dashboard extends AppCompatActivity {
                         return;
                     }
                     startActivity(callIntent);
-                }
+                }*/
                 lineGraphSeries[stNum].appendData(new DataPoint(xAxis, Double.parseDouble(s[stNum])),true, 40);
                 ((TextView)view[i].findViewById(R.id.tValue1)).setText(s[stNum]);
                 stNum++;

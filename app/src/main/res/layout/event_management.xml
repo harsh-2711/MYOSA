@@ -42,6 +42,7 @@
             android:textSize="14sp"/>
 
     </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rSesnsors"
         android:layout_width="match_parent"
