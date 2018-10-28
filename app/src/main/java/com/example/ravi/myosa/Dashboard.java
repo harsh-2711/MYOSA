@@ -425,7 +425,7 @@ public class Dashboard extends AppCompatActivity {
                     visi[i] = true;
                     view[i].setVisibility(View.VISIBLE);
                 }
-/*                if (Double.valueOf(s[23]) >= 75) {
+                if (Double.valueOf(s[23]) >= 75) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
                     String number = "7574842044";
                     callIntent.setData(Uri.parse("tel:" + number));//change the number
@@ -440,7 +440,7 @@ public class Dashboard extends AppCompatActivity {
                         return;
                     }
                     startActivity(callIntent);
-                }*/
+                }
                 lineGraphSeries[stNum].appendData(new DataPoint(xAxis, Double.parseDouble(s[stNum])),true, 40);
                 ((TextView)view[i].findViewById(R.id.tValue1)).setText(s[stNum]);
                 stNum++;

@@ -1,10 +1,14 @@
 package com.example.ravi.myosa;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,6 +48,8 @@ public class PredictionsActivity extends AppCompatActivity {
     double predictionMeanX = 0, predictionMeanY = 0, predictionMeanZ = 0, previousMeanX = 0, previousMeanY = 0, previousMeanZ = 0;
 
     private String[] scenes;
+
+    private int counter = 0;
 
     private double walkingXLow = -100, walkingXHigh = 100, walkingYLow = -100, walkingYHigh = 100, walkingZLow = -20, walkingZHigh = 20,
             normalXLow = -200, normalXHigh = 200, normalYLow = -100, normalYHigh = 100, normalZLow = -20, normalZHigh = 20,
@@ -160,6 +166,84 @@ public class PredictionsActivity extends AppCompatActivity {
 
     private void makePrediction(double gyroX, double gyroY, double gyroZ, double accY, double accZ) {
 
+        if(accY >= 3 || accY <= -3 || accZ >= 3 || accZ <= -3) {
+            // Man has fallen
+            handler.removeCallbacksAndMessages(null);
+            fearLevel.setProgress(100);
+            fearPercentage.setText("100%");
+            predictedScene.setText(scenes[4]);
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            String number = "7990252119";
+            callIntent.setData(Uri.parse("tel:" + number));//change the number
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            startActivity(callIntent);
+        }
+        else {
+            predictionMeanX *= 1000;
+            predictionMeanX -= predictionDataX.get(0);
+            predictionMeanX += gyroX;
+            predictionMeanX /= 1000;
+            predictionMeanY *= 1000;
+            predictionMeanY -= predictionDataY.get(0);
+            predictionMeanY += gyroY;
+            predictionMeanY /= 1000;
+            predictionMeanZ *= 1000;
+            predictionMeanZ -= predictionDataZ.get(0);
+            predictionMeanZ += gyroZ;
+            predictionMeanZ /= 1000;
+
+            previousMeanX *= 10000;
+            previousMeanX -= predictionDataX.get(0);
+            previousMeanX += gyroX;
+            previousMeanX /= 10000;
+            previousMeanY *= 10000;
+            previousMeanY -= predictionDataY.get(0);
+            previousMeanY += gyroY;
+            previousMeanY /= 10000;
+            previousMeanZ *= 10000;
+            previousMeanZ -= predictionDataZ.get(0);
+            previousMeanZ += gyroZ;
+            previousMeanZ /= 10000;
+
+            predictionDataX.remove(0);
+            predictionDataX.add(gyroX);
+            predictionDataY.remove(0);
+            predictionDataY.add(gyroY);
+            predictionDataZ.remove(0);
+            predictionDataZ.add(gyroZ);
+
+            previousDataX.remove(0);
+            previousDataX.add(gyroX);
+            previousDataY.remove(0);
+            previousDataY.add(gyroY);
+            previousDataZ.remove(0);
+            previousDataZ.add(gyroZ);
+
+            counter++;
+
+            if(counter == 1000) {
+                counter = 0;
+                // Prediction Algorithm
+                double maxX = 0, maxY = 0, maxZ = 0;
+                for(int i = 0; i < 1000; i++) {
+                    if(predictionDataX.get(i) > maxX)
+                        maxX = predictionDataX.get(i);
+                    if(predictionDataY.get(i) > maxY)
+                        maxY = predictionDataY.get(i);
+                    if(predictionDataZ.get(i) > maxZ)
+                        maxZ = predictionDataZ.get(i);
+                }
+            }
+        }
     }
 
     private void predictionData() {
@@ -223,15 +307,15 @@ public class PredictionsActivity extends AppCompatActivity {
 
             // Just to increase the flavor of the app
             try {
-                Thread.sleep(5000);
+                Thread.sleep(4000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            double maxXY = 100;
-            double minXY = -100;
-            double maxZ = 20;
-            double minZ = -20;
+            double maxXY = walkingXHigh;
+            double minXY = walkingXLow;
+            double maxZ = walkingZHigh;
+            double minZ = walkingZLow;
 
             for(int i = 0; i < 1000; i++) {
                 predictionDataX.add(Math.random() * ((maxXY - minXY) + 1) + minXY);
@@ -243,6 +327,10 @@ public class PredictionsActivity extends AppCompatActivity {
                 predictionMeanZ += predictionDataZ.get(i);
             }
 
+            predictionMeanX /= 1000;
+            predictionMeanY /= 1000;
+            predictionMeanZ /= 1000;
+
             for(int i = 0; i < 10000; i++) {
                 previousDataX.add(Math.random() * ((maxXY - minXY) + 1) + minXY);
                 previousDataY.add(Math.random() * ((maxXY - minXY) + 1) + minXY);
@@ -252,6 +340,10 @@ public class PredictionsActivity extends AppCompatActivity {
                 previousMeanY += previousDataY.get(i);
                 previousMeanZ += previousDataZ.get(i);
             }
+
+            previousMeanX /= 10000;
+            previousMeanY /= 10000;
+            previousMeanZ /= 10000;
 
             return null;
         }
