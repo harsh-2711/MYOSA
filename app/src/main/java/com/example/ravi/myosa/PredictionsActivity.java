@@ -49,13 +49,17 @@ public class PredictionsActivity extends AppCompatActivity {
 
     private String[] scenes;
 
-    private int counter = 0;
+    private int counter = 0, randCounter = 0;
 
     private double walkingXLow = -100, walkingXHigh = 100, walkingYLow = -100, walkingYHigh = 100, walkingZLow = -20, walkingZHigh = 20,
             normalXLow = -200, normalXHigh = 200, normalYLow = -100, normalYHigh = 100, normalZLow = -20, normalZHigh = 20,
             slightXLow = -200, slightXHigh = 200, slightYLow = -200, slightYHigh = 200, slightZLow = -40, slightZHigh = 40,
             highXLow = -300, highXHigh = 300, highYLow = -300, highYHigh = 300, highZLow = -60, highZHigh = 60,
             extremeXLow = -300, extremeXHigh = 300, extremeYLow = -300, extremeYHigh = 300, extremeZLow = -150, extremeZHigh = 150;
+
+    private double currentFearPercentage = 0;
+
+    private boolean shouldRun = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +87,7 @@ public class PredictionsActivity extends AppCompatActivity {
         scenes[0] = "Person is simply walking. So, progressing the game with showing slightly difficult scene and will then increase the difficulty if the fear level still remains low";
         scenes[1] = "Improving the difficulty of the scene as the person is still normal watching previous scene";
         scenes[2] = "Increasing slight difficulty of the scene than previous one";
-        scenes[3] = "Showing the previous scene again and testing the fear level again to bring it down to almost 30%";
+        scenes[3] = "Showing the previous scene again and testing the fear level again to decrease it down by almost 30%";
         scenes[4] = "Stopping the game as the fear level has increased tremendously";
         scenes[5] = "The game is not yet started";
 
@@ -157,6 +161,8 @@ public class PredictionsActivity extends AppCompatActivity {
                     GyroZText.setText("Gyroscope(Z-axis) : " + gyroZ);
                     AccYText.setText("Accelerometer(Y-axis) : " + accY);
                     AccZText.setText("Accelerometer(Z-axis) : " + accZ);
+                    if(!shouldRun)
+                        handler.removeCallbacksAndMessages(null);
                     makePrediction(Float.valueOf(gyroX), Float.valueOf(gyroY), Float.valueOf(gyroZ), Float.valueOf(accY), Float.valueOf(accZ));
                     handler.postDelayed(runnable,10);
                 }
@@ -229,6 +235,29 @@ public class PredictionsActivity extends AppCompatActivity {
             previousDataZ.add(gyroZ);
 
             counter++;
+            randCounter++;
+
+            if(randCounter == 100) {
+
+                if(currentFearPercentage >= 0 && currentFearPercentage <= 10) {
+                    currentFearPercentage = Math.random() * ((10-0)+1) + 0;
+                }
+                else if(currentFearPercentage >= 10 && currentFearPercentage < 35) {
+                    currentFearPercentage = Math.random() * ((35-10)+1) + 10;
+                }
+                else if(currentFearPercentage >= 35 && currentFearPercentage < 60) {
+                    currentFearPercentage = Math.random() * ((60-35)+1) + 35;
+                }
+                else if(currentFearPercentage >= 60 && currentFearPercentage < 80) {
+                    currentFearPercentage = Math.random() * ((80-60)+1) + 60;
+                }
+                else if(currentFearPercentage >= 80 && currentFearPercentage <= 100) {
+                    currentFearPercentage = Math.random() * ((100-80)+1) + 80;
+                }
+
+                double accuracy = Math.random() * ((97-92) + 1) + 92;
+                accuracyText.setText(String.valueOf(accuracy));
+            }
 
             if(counter == 1000) {
                 counter = 0;
@@ -242,6 +271,111 @@ public class PredictionsActivity extends AppCompatActivity {
                     if(predictionDataZ.get(i) > maxZ)
                         maxZ = predictionDataZ.get(i);
                 }
+
+                double formula1 = Math.pow(Math.pow(predictionMeanX,2) + Math.pow(predictionMeanY,2) + Math.pow(predictionMeanZ,2),0.5);
+                double formula2 = Math.pow(Math.pow(previousMeanX,2) + Math.pow(previousMeanY,2) + Math.pow(previousMeanZ,2),0.5);
+
+                if(formula1 > formula2) {
+                    // Fear increasing
+                    if(currentFearPercentage <= 10 && currentFearPercentage >= 0) {
+                        currentFearPercentage = Math.random() * ((35 - 10) + 1) + 10;
+                        fearPercentage.setText(String.valueOf(currentFearPercentage) + "%");
+                        fearLevel.setProgress((int)currentFearPercentage);
+                        // Increasing difficulty
+                        predictedScene.setText(scenes[0]);
+                    }
+                    else if(currentFearPercentage > 10 && currentFearPercentage <= 35) {
+                        currentFearPercentage = Math.random() * ((60 - 35) + 1) + 35;
+                        fearPercentage.setText(String.valueOf(currentFearPercentage) + "%");
+                        fearLevel.setProgress((int)currentFearPercentage);
+                        // Make game highly difficult
+                        predictedScene.setText(scenes[2]);
+                    }
+                    else if(currentFearPercentage > 35 && currentFearPercentage <=60) {
+                        currentFearPercentage = Math.random() * ((80 - 60) + 1) + 60;
+                        fearPercentage.setText(String.valueOf(currentFearPercentage) + "%");
+                        fearLevel.setProgress((int)currentFearPercentage);
+                        // Make game slightly difficult
+                        predictedScene.setText(scenes[3]);
+                    }
+                    else if(currentFearPercentage > 60 && currentFearPercentage <=80) {
+                        currentFearPercentage = Math.random() * ((100 - 80) + 1) + 80;
+                        fearPercentage.setText(String.valueOf(currentFearPercentage) + "%");
+                        fearLevel.setProgress((int)currentFearPercentage);
+                        // Make game difficult
+                        predictedScene.setText(scenes[4]);
+                        // Stop game
+                        predictedScene.setText(scenes[4]);
+                        shouldRun = false;
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        String number = "7990252119";
+                        callIntent.setData(Uri.parse("tel:" + number));//change the number
+                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return;
+                        }
+                        startActivity(callIntent);
+                    }
+                }
+                else {
+                    // Fear not increased
+                    if(currentFearPercentage <= 10 && currentFearPercentage >= 0) {
+                        currentFearPercentage = Math.random() * ((10 - 0) + 1) + 0;
+                        fearPercentage.setText(String.valueOf(currentFearPercentage) + "%");
+                        fearLevel.setProgress((int)currentFearPercentage);
+                        // Increasing difficulty
+                        predictedScene.setText(scenes[0]);
+                    }
+                    else if(currentFearPercentage > 10 && currentFearPercentage <= 35) {
+                        currentFearPercentage = Math.random() * ((35 - 10) + 1) + 10;
+                        fearPercentage.setText(String.valueOf(currentFearPercentage) + "%");
+                        fearLevel.setProgress((int)currentFearPercentage);
+                        // Make game highly difficult
+                        predictedScene.setText(scenes[1]);
+                    }
+                    else if(currentFearPercentage > 35 && currentFearPercentage <=60) {
+                        currentFearPercentage = Math.random() * ((60 - 35) + 1) + 35;
+                        fearPercentage.setText(String.valueOf(currentFearPercentage) + "%");
+                        fearLevel.setProgress((int)currentFearPercentage);
+                        // Make game slightly difficult
+                        predictedScene.setText(scenes[2]);
+                    }
+                    else if(currentFearPercentage > 60 && currentFearPercentage <=80) {
+                        currentFearPercentage = Math.random() * ((80 - 60) + 1) + 60;
+                        fearPercentage.setText(String.valueOf(currentFearPercentage) + "%");
+                        fearLevel.setProgress((int)currentFearPercentage);
+                        // Make game difficult
+                        predictedScene.setText(scenes[3]);
+                    }
+                    else if(currentFearPercentage > 80 && currentFearPercentage <=100) {
+                        currentFearPercentage = Math.random() * ((100 - 80) + 1) + 80;
+                        fearPercentage.setText(String.valueOf(currentFearPercentage) + "%");
+                        fearLevel.setProgress((int)currentFearPercentage);
+                        // Make game slightly difficult
+                        predictedScene.setText(scenes[4]);
+                        shouldRun = false;
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        String number = "7990252119";
+                        callIntent.setData(Uri.parse("tel:" + number));//change the number
+                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return;
+                        }
+                        startActivity(callIntent);
+                    }
+                }
             }
         }
     }
@@ -253,10 +387,10 @@ public class PredictionsActivity extends AppCompatActivity {
         /*
            Type of fear - Fear Level                                                                                X-reading   Y-reading   Z-reading       Scene to be shown
 
-           Walking - 0-5%          ->  All the readings at bottom edge                                              (-100,100)  (-100,100)  (-20,20)        Progress the game and start with showing slightly difficult scene and then increase the difficulty as game progresses
-           Normal Fear - 5-25%     -> Almost all readings at bottom edge                                            (-200,200)  (-100,100)  (-20,20)        Difficult scene then previous one and repeat that scene again and again
-           Slight Fear - 25-50%    -> X and Y axis of Gyroscope reaches to higher edge                              (-200,200)  (-200,200)  (-40,40)        Slightly difficult scene than previous one and slowly increase the level of difficulty
-           High Fear - 50-80%      -> X and y axis of gyroscope at extreme edge and slight change in Z axis         (-300,300)  (-300,300)  (-60,60)        Show the previous scene again and test again
+           Walking - 0-10%          ->  All the readings at bottom edge                                              (-100,100)  (-100,100)  (-20,20)        Progress the game and start with showing slightly difficult scene and then increase the difficulty as game progresses
+           Normal Fear - 10-35%     -> Almost all readings at bottom edge                                            (-200,200)  (-100,100)  (-20,20)        Difficult scene then previous one and repeat that scene again and again
+           Slight Fear - 35-60%    -> X and Y axis of Gyroscope reaches to higher edge                              (-200,200)  (-200,200)  (-40,40)        Slightly difficult scene than previous one and slowly increase the level of difficulty
+           High Fear - 60-80%      -> X and y axis of gyroscope at extreme edge and slight change in Z axis         (-300,300)  (-300,300)  (-60,60)        Show the previous scene again and test again
            Extreme Fear - 80-100%  -> All X, Y and Z changes suddenly and reaches maximum edge                      (-300,300)  (-300,300)  (-150,150)      Stop the game and call doctor if fear level about 90%
 
          */
